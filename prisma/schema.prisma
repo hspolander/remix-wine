@@ -52,7 +52,7 @@ model Wine {
   url         String?
   vintage     Int?
   reviews     Review[]
-  sysWineId   String? @unique
+  sysWineId   Int? @unique
   sysWine     SystembolagetWine?   @relation(fields: [sysWineId], references: [productId])
 }
 
@@ -68,7 +68,7 @@ model Review {
 }
 
 model SystembolagetWine {
-  productId                 String @id
+  productId                 Int @id
   alcoholPercentage         Float?
   assortmentText            String?
   bottleText                String?
@@ -81,7 +81,6 @@ model SystembolagetWine {
   customCategoryTitle       String?
   grapes                    SystembolagetGrape[]
   image                     String?
-  isDiscontinued            Boolean?
   isOrganic                 Boolean?
   isSustainableChoice       Boolean?
   isClimateSmartPackaging   Boolean?
@@ -108,7 +107,7 @@ model SystembolagetWine {
   tasteClockSweetness       Int?
   tasteSymbol               SystembolagetTasteSymbol[]
   usage                     String?
-  vintage                   String?
+  vintage                   Int?
   volume                    Float?
   volumeText                String?
   wine                      Wine?
@@ -118,14 +117,14 @@ model SystembolagetGrape {
   id          String   @id @default(uuid())
   name        String
   sysWine     SystembolagetWine @relation(fields: [sysWineId], references: [productId])
-  sysWineId   String
+  sysWineId   Int
 }
 
 model SystembolagetTasteSymbol {
   id          String   @id @default(uuid())
   symbol      String
   sysWine     SystembolagetWine @relation(fields: [sysWineId], references: [productId])
-  sysWineId   String
+  sysWineId   Int
 }
 
 model WineGrape {
