@@ -24,6 +24,7 @@ model WineUser {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   username     String   @unique
+  name         String
   passwordHash String
   reviews      Review[]
 }
@@ -61,9 +62,10 @@ model Review {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   comment     String
-  wine        Wine @relation(fields: [wineId], references: [id])
+  score       Int
+  wine        Wine @relation(fields: [wineId], references: [id], onDelete: Cascade)
   wineId      String
-  reviewer    WineUser @relation(fields: [userId], references: [id])
+  reviewer    WineUser @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 }
 
@@ -116,21 +118,21 @@ model SystembolagetWine {
 model SystembolagetGrape {
   id          String   @id @default(uuid())
   name        String
-  sysWine     SystembolagetWine @relation(fields: [sysWineId], references: [productId])
+  sysWine     SystembolagetWine @relation(fields: [sysWineId], references: [productId], onDelete: Cascade)
   sysWineId   Int
 }
 
 model SystembolagetTasteSymbol {
   id          String   @id @default(uuid())
   symbol      String
-  sysWine     SystembolagetWine @relation(fields: [sysWineId], references: [productId])
+  sysWine     SystembolagetWine @relation(fields: [sysWineId], references: [productId], onDelete: Cascade)
   sysWineId   Int
 }
 
 model WineGrape {
   id      String   @id @default(uuid())
   name    String
-  wine    Wine @relation(fields: [wineId], references: [id])
+  wine    Wine @relation(fields: [wineId], references: [id], onDelete: Cascade)
   wineId  String
 }
 
