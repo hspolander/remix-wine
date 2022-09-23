@@ -22,6 +22,9 @@ export default function IndexRoute() {
             <li>
               <Link to="review">Review Wines</Link>
             </li>
+            <li>
+              <Link to="reviews">reviews</Link>
+            </li>
           </ul>
         </nav>
       </div>
