@@ -53,7 +53,7 @@ model Wine {
   url         String?
   vintage     Int?
   reviews     Review[]
-  sysWineId   Int? @unique
+  sysWineId   String? @unique
   sysWine     SystembolagetWine?   @relation(fields: [sysWineId], references: [productId])
 }
 
@@ -70,16 +70,16 @@ model Review {
 }
 
 model SystembolagetWine {
-  productId                 Int @id
+  productId                 String @id
   alcoholPercentage         Float?
   assortmentText            String?
   bottleText                String?
-  categoryLevel1            String?
-  categoryLevel2            String?
+  categoryLevel1            String
+  categoryLevel2            String
   categoryLevel3            String?
   categoryLevel4            String?
   color                     String?
-  country                   String?
+  country                   String
   customCategoryTitle       String?
   grapes                    SystembolagetGrape[]
   image                     String?
@@ -119,14 +119,14 @@ model SystembolagetGrape {
   id          String   @id @default(uuid())
   name        String
   sysWine     SystembolagetWine @relation(fields: [sysWineId], references: [productId], onDelete: Cascade)
-  sysWineId   Int
+  sysWineId   String
 }
 
 model SystembolagetTasteSymbol {
   id          String   @id @default(uuid())
   symbol      String
   sysWine     SystembolagetWine @relation(fields: [sysWineId], references: [productId], onDelete: Cascade)
-  sysWineId   Int
+  sysWineId   String
 }
 
 model WineGrape {
