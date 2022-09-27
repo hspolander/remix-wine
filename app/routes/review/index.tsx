@@ -1,38 +1,38 @@
+import type { SystembolagetWine } from "@prisma/client";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData, Link, useCatch } from "@remix-run/react";
-import type { Wine } from "@prisma/client";
-
+import { useCatch, useLoaderData } from "@remix-run/react";
 import { db } from "~/utils/db.server";
 
-type LoaderData = { randomWine: Wine };
+type LoaderData = SystembolagetWine[];
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
 
-export const loader: LoaderFunction = async () => {
-  const count = await db.wine.count();
-  const randomRowNumber = Math.floor(Math.random() * count);
-  const [randomWine] = await db.wine.findMany({
-    take: 1,
-    skip: randomRowNumber,
+  const categoryLevel2 = url.searchParams.get("categoryLevel2") || "";
+  const country = url.searchParams.get("country") || "";
+  const name = url.searchParams.get("name") || "";
+
+  const systembolagetWines = await db.systembolagetWine.findMany({
+    where: {
+      AND: [
+        { categoryLevel2: { contains: categoryLevel2 } },
+        { country: { contains: country } },
+        {
+          OR: [
+            { productNameBold: { contains: name } },
+            { productNameThin: { contains: name } },
+          ],
+        },
+      ],
+    },
   });
-  if (!randomWine) {
-    throw new Response("No random joke found", {
-      status: 404,
-    });
-  }
-  const data: LoaderData = { randomWine };
-  return json(data);
+  return json(systembolagetWines);
 };
 
-export default function JokesIndexRoute() {
+export default function ReviewIndexRoute() {
   const data = useLoaderData<LoaderData>();
-
-  return (
-    <div>
-      <p>Here's a random joke:</p>
-      <p>{data.randomWine.name}</p>
-      <Link to={data.randomWine.id}>"{data.randomWine.name}" Permalink</Link>
-    </div>
-  );
+  console.log(data);
+  return <div>{data.map((wine) => wine.productNameBold)}</div>;
 }
 
 export function CatchBoundary() {
